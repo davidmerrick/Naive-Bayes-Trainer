@@ -1,0 +1,23 @@
+{
+  "name": "naive-bayes-trainer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@bitbucket.org:dmerica/naive-bayes-trainer.git",
+  "author": "David Merrick <david.merrick@jivesoftware.com>",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.3",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babelify": "^7.3.0",
+    "grunt": "^1.0.1",
+    "grunt-browserify": "^5.0.0",
+    "grunt-contrib-uglify": "^2.2.0",
+    "grunt-contrib-watch": "^1.0.0"
+  }
+}
