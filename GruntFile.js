@@ -7,7 +7,7 @@ module.exports = grunt => {
                     transform: [['babelify', {presets: ['es2015', 'react']}]]
                 },
                 src: 'src/app/Client.jsx',
-                dest: 'dist/js/client-bundle.js'
+                dest: 'dist/client/js/client-bundle.js'
             }
         },
         watch: {
@@ -17,7 +17,7 @@ module.exports = grunt => {
         uglify: {
             client: {
                 files: {
-                    'dist/js/client-bundle.js': ['dist/js/client-bundle.js']
+                    'dist/client/js/client-bundle.js': ['dist/client/js/client-bundle.js']
                 }
             }
         }
