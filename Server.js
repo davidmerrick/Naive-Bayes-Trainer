@@ -1,9 +1,16 @@
 import express from 'express'
+import BodyParser from 'body-parser'
+import Endpoints from './src/constants/Endpoints'
 
-let app = express();
+const app = express();
 
-let assets = express.static("public");
-app.use(assets);
+app.use(express.static("public"));
+app.use(express.static("node_modules/bootstrap/dist"));
+app.use(BodyParser.urlencoded({ extended: true }));
+
+app.post(Endpoints.CLASSIFICATIONS, (req, res) => {
+    res.send("foo");
+});
 
 const PORT = 3000;
 app.listen(PORT, () => {
