@@ -1,10 +1,9 @@
-import React from 'react'
-import { Button, ButtonToolbar } from 'react-bootstrap'
-import Constants from '../constants/Constants'
-import Endpoints from '../constants/Endpoints'
-import { connect } from 'react-redux'
-import StoreState from '../constants/StoreState'
-import Actions from '../actions/Actions'
+import React from "react";
+import {Button, ButtonToolbar} from "react-bootstrap";
+import Constants from "../constants/Constants";
+import {connect} from "react-redux";
+import StoreState from "../constants/StoreState";
+import Actions from "../actions/Actions";
 
 @connect(store => {
     return {
@@ -23,9 +22,14 @@ class Client extends React.Component {
         this.props.dispatch(Actions.initialize());
     }
 
+    handleButtonClick(option){
+        this.props.dispatch(Actions.submitData(this.props.textItem, option));
+    }
+
     render(){
         let { storeState } = this.props;
         switch(storeState) {
+            case StoreState.LOADING:
             case StoreState.EMPTY:
                 return(
                     <div>
@@ -36,16 +40,21 @@ class Client extends React.Component {
             case StoreState.READY:
                 return (
                     <div>
-                        <form action={Endpoints.CLASSIFICATIONS} method="POST">
-                            {this.props.textItem.text}
-                            <input type="hidden" name="textId" value={this.props.textItem.id}/>
-                            <ButtonToolbar>
-                                <Button name="option" value={Constants.OPTION_ONE} bsStyle="primary"
-                                        type="submit">{Constants.OPTION_ONE}</Button>
-                                <Button name="option" value={Constants.OPTION_TWO} bsStyle="primary"
-                                        type="submit">{Constants.OPTION_TWO}</Button>
-                            </ButtonToolbar>
-                        </form>
+                        {this.props.textItem.text}
+                        <ButtonToolbar>
+                            <Button
+                                bsStyle="primary"
+                                onClick={() => this.handleButtonClick(Constants.OPTION_ONE)}
+                            >
+                                    {Constants.OPTION_ONE}
+                            </Button>
+                            <Button
+                                bsStyle="primary"
+                                onClick={() => this.handleButtonClick(Constants.OPTION_TWO)}
+                            >
+                                    {Constants.OPTION_TWO}
+                            </Button>
+                        </ButtonToolbar>
                     </div>
                 );
         }

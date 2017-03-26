@@ -6,6 +6,7 @@
   "author": "David Merrick <david.merrick@jivesoftware.com>",
   "license": "MIT",
   "dependencies": {
+    "async": "^2.2.0",
     "axios": "^0.15.3",
     "babel-cli": "^6.24.0",
     "bayes": "^0.0.6",

@@ -17,6 +17,10 @@ const Reducer = (state = initialState, action) => {
             newState.storeState = StoreState.READY;
             return newState;
             break;
+        case ActionType.STORE_IS_LOADING:
+            newState.storeState = StoreState.LOADING;
+            return newState;
+            break;
         default:
             return newState;
             break;

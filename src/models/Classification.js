@@ -1,7 +1,7 @@
 class Classification {
 
-    constructor(tweetText, option){
-        this.tweetText = tweetText;
+    constructor(text, option){
+        this.text = text;
         this.option = option;
     }
 }

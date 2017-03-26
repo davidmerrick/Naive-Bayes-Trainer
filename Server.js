@@ -13,9 +13,6 @@ app.use(express.static("public"));
 app.use(express.static("node_modules/bootstrap/dist"));
 app.use(BodyParser.urlencoded({ extended: true }));
 
-
-// Todo: generate an ID for each item. Send that ID over the wire to reduce bandwidth instead of the text.
-
 let classifications = [];
 let textItems = [];
 
@@ -44,7 +41,7 @@ app.get(`${Endpoints.TEXTS}/next`, (req, res) => {
 app.get(`${Endpoints.CLASSIFICATIONS}/export`, (req, res) => {
     let classifier = bayes();
     classifications.forEach(item => {
-        classifier.learn(item.tweetText, item.option);
+        classifier.learn(item.text, item.option);
     });
 
     let classifierJson = classifier.toJson();
@@ -57,7 +54,7 @@ app.get(Endpoints.CLASSIFICATIONS, (req, res) => {
 });
 
 app.post(Endpoints.CLASSIFICATIONS, (req, res) => {
-    let tweetText = req.body.tweetText;
+    let itemId = req.body.id;
     let option = req.body.option;
 
     let newClassification = new Classification(tweetText, option);
