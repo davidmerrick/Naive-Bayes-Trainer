@@ -15,7 +15,7 @@ class Client extends React.Component {
             <div>
                 <form action={Endpoints.CLASSIFICATIONS} method="POST">
                     {this.props.tweetText}
-                    <input type="hidden" name="tweet-text" value={this.props.tweetText} />
+                    <input type="hidden" name="tweetText" value={this.props.tweetText} />
                     <ButtonToolbar>
                         <Button name="option" value={Constants.OPTION_ONE} bsStyle="primary" type="submit">{Constants.OPTION_ONE}</Button>
                         <Button name="option" value={Constants.OPTION_TWO} bsStyle="primary" type="submit">{Constants.OPTION_TWO}</Button>
