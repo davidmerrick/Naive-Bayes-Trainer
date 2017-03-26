@@ -1,6 +1,6 @@
 const Constants = {
-    OPTION_ONE: "yes",
-    OPTION_TWO: "no"
+    OPTION_ONE: "attack",
+    OPTION_TWO: "not_attack"
 };
 
 export default Constants

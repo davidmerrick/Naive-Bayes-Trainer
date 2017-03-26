@@ -4,7 +4,10 @@ module.exports = grunt => {
         browserify: {
             client: {
                 options: {
-                    transform: [['babelify', {presets: ['es2015', 'react']}]]
+                    transform: [['babelify', {
+                        presets: ['es2015', 'react'],
+                        plugins: ['transform-decorators-legacy', 'transform-object-rest-spread']
+                    }]]
                 },
                 src: 'src/app/Client.jsx',
                 dest: 'public/js/client-bundle.js'
