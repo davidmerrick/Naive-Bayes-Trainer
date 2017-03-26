@@ -1,17 +1,16 @@
-import express from 'express'
-import BodyParser from 'body-parser'
-import Endpoints from './src/constants/Endpoints'
-import Classification from './src/models/Classification'
-import bayes from 'bayes'
-import fs from 'fs'
-import TextItem from './src/models/TextItem'
-import uuidV4 from 'uuid/v4'
+import express from "express";
+import BodyParser from "body-parser";
+import Endpoints from "./src/constants/Endpoints";
+import bayes from "bayes";
+import fs from "fs";
+import TextItem from "./src/models/TextItem";
+import uuidV4 from "uuid/v4";
 
 const app = express();
 
 app.use(express.static("public"));
 app.use(express.static("node_modules/bootstrap/dist"));
-app.use(BodyParser.urlencoded({ extended: true }));
+app.use(BodyParser.json());
 
 let classifications = [];
 let textItems = [];
@@ -54,12 +53,9 @@ app.get(Endpoints.CLASSIFICATIONS, (req, res) => {
 });
 
 app.post(Endpoints.CLASSIFICATIONS, (req, res) => {
-    let itemId = req.body.id;
-    let option = req.body.option;
-
-    let newClassification = new Classification(tweetText, option);
+    let newClassification = req.body;
     classifications.push(newClassification);
-
+    console.log(`New classification added: ${newClassification.text}, ${newClassification.option}`);
     res.json(newClassification);
 });
 

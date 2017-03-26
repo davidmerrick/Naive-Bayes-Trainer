@@ -8,22 +8,25 @@ import async from 'async'
 class Actions {
 
     static initialize(){
-        return this.getNextTextItem();
-    }
-
-    static getNextTextItem(){
         return dispatch => {
-            axios.get(`${Endpoints.TEXTS}/next`).then(response => {
-                let data = response.data;
-                let textItem = new TextItem(data.id, data.text)
-                dispatch({
-                    type: ActionType.GET_NEXT_TEXT_FULFILLED,
-                    payload: {
-                        textItem: textItem
-                    }
-                });
+            this.getNextTextItem(dispatchData => {
+                dispatch(dispatchData);
             });
         };
+    }
+
+    static getNextTextItem(callback){
+        axios.get(`${Endpoints.TEXTS}/next`).then(response => {
+            let data = response.data;
+            let textItem = new TextItem(data.id, data.text)
+            let dispatchData = {
+                type: ActionType.GET_NEXT_TEXT_FULFILLED,
+                payload: {
+                    textItem: textItem
+                }
+            };
+            return callback(dispatchData);
+        });
     }
 
     static submitData(textItem, option){
@@ -36,13 +39,16 @@ class Actions {
                     callback();
                 },
                 callback => {
-                    axios.post(`${Endpoints.CLASSIFICATIONS}`, JSON.stringify(newClassification))
+                    axios.post(`${Endpoints.CLASSIFICATIONS}`, newClassification)
                         .then(response => {
                             callback();
                         });
                 },
                 callback => {
-                    this.getNextTextItem();
+                    this.getNextTextItem(dispatchData => {
+                        dispatch(dispatchData);
+                        callback;
+                    });
                 }
             ]);
         }
