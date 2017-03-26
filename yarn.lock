@@ -676,6 +676,10 @@ base64-js@^1.0.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.2.0.tgz#a39992d723584811982be5e290bb6a53d86700f1"
 
+bayes@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/bayes/-/bayes-0.0.6.tgz#52022573cce2d638d6d926a71c763091e0b5befe"
+
 bcrypt-pbkdf@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/bcrypt-pbkdf/-/bcrypt-pbkdf-1.0.1.tgz#63bc5dcb61331b92bc05fd528953c33462a06f8d"
