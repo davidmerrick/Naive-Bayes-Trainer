@@ -40,7 +40,7 @@ app.get(`${Endpoints.TEXTS}/next`, (req, res) => {
 app.get(`${Endpoints.CLASSIFICATIONS}/export`, (req, res) => {
     let classifier = bayes();
     classifications.forEach(item => {
-        classifier.learn(item.text, item.option);
+        classifier.learn(item.textItem.text, item.option);
     });
 
     let classifierJson = classifier.toJson();
@@ -55,7 +55,12 @@ app.get(Endpoints.CLASSIFICATIONS, (req, res) => {
 app.post(Endpoints.CLASSIFICATIONS, (req, res) => {
     let newClassification = req.body;
     classifications.push(newClassification);
-    console.log(`New classification added: ${newClassification.text}, ${newClassification.option}`);
+
+    // Remove the item from the array
+    let index = textItems.findIndex(item => item.id === newClassification.textItem.id)
+    textItems.splice(index, 1);
+
+    console.log(`New classification added: ${newClassification.textItem.text}, ${newClassification.option}`);
     res.json(newClassification);
 });
 

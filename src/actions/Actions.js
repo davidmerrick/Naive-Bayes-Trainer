@@ -30,7 +30,7 @@ class Actions {
     }
 
     static submitData(textItem, option){
-        let newClassification = new Classification(textItem.text, option);
+        let newClassification = new Classification(textItem, option);
 
         return dispatch => {
             async.series([

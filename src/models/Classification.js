@@ -1,7 +1,7 @@
 class Classification {
 
-    constructor(text, option){
-        this.text = text;
+    constructor(textItem, option){
+        this.textItem = textItem;
         this.option = option;
     }
 }
