@@ -1,6 +1,7 @@
 import express from 'express'
 import BodyParser from 'body-parser'
 import Endpoints from './src/constants/Endpoints'
+import Classification from './src/models/Classification'
 
 const app = express();
 
@@ -12,7 +13,9 @@ app.post(Endpoints.CLASSIFICATIONS, (req, res) => {
     let tweetText = req.body.tweetText;
     let option = req.body.option;
 
-    res.send(`You sent: Tweet text "${tweetText}", option "${option}"`);
+    let myClassification = new Classification(tweetText, option);
+
+    res.json(myClassification);
 });
 
 const PORT = 3000;
