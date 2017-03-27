@@ -1,8 +1,8 @@
-import React from 'react'
-import { Provider } from 'react-redux'
-import Store from '../stores/Store'
-import App from '../components/App.jsx'
-import ReactDOM from 'react-dom'
+import React from "react";
+import {Provider} from "react-redux";
+import Store from "../stores/Store";
+import App from "../components/App.jsx";
+import ReactDOM from "react-dom";
 
 class Client extends React.Component {
     render(){

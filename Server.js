@@ -5,8 +5,14 @@ import bayes from "bayes";
 import fs from "fs";
 import TextItem from "./src/models/TextItem";
 import uuidV4 from "uuid/v4";
+import http from "http";
+import io from "socket.io";
+import Constants from './src/constants/Constants'
+import SocketEvents from './src/constants/SocketEvents'
 
 const app = express();
+const server = http.createServer(app);
+const ioServer = io(server);
 
 app.use(express.static("public"));
 app.use(express.static("node_modules/bootstrap/dist"));
@@ -60,11 +66,24 @@ app.post(Endpoints.CLASSIFICATIONS, (req, res) => {
     let index = textItems.findIndex(item => item.id === newClassification.textItem.id)
     textItems.splice(index, 1);
 
+    // Push updated count to connected client(s)
+    ioServer.emit(SocketEvents.UPDATE_COUNT, { count: classifications.length, remaining: textItems.length });
+
     console.log(`New classification added: ${newClassification.textItem.text}, ${newClassification.option}`);
     res.json(newClassification);
 });
 
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Web server started. Listening on http://localhost:${PORT}`);
+// Add WebSocket server for sending the count back
+ioServer.on('connection', socket => {
+    console.log('WebSocket client connected');
+
+    ioServer.emit(SocketEvents.UPDATE_COUNT, { count: classifications.length, remaining: textItems.length });
+
+    socket.on('disconnect', () => {
+        console.log('WebSocket client disconnected');
+    })
+});
+
+server.listen(Constants.PORT, () => {
+    console.log(`Web server started. Listening on http://localhost:${Constants.PORT}`);
 });

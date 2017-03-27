@@ -9,3 +9,11 @@ div#classifier-view {
 div#classifier-options {
     margin-top: 30px;
 }
+
+div#count-view {
+    margin-top: 30px;
+}
+
+div#classifier-text {
+    height: 75px;
+}

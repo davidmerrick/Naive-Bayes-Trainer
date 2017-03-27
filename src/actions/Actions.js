@@ -59,6 +59,16 @@ class Actions {
             type: ActionType.STORE_IS_LOADING
         }
     }
+
+    static updateCount(count, remaining){
+        return {
+            type: ActionType.UPDATED_COUNT,
+            payload: {
+                count: count,
+                remaining: remaining
+            }
+        }
+    }
 }
 
 export default Actions

@@ -4,7 +4,9 @@ import ActionType from '../constants/ActionType'
 const initialState = {
     textItem: null,
     storeState: StoreState.EMPTY,
-    error: null
+    error: null,
+    count: 0,
+    remaining: null
 };
 
 const Reducer = (state = initialState, action) => {
@@ -19,6 +21,12 @@ const Reducer = (state = initialState, action) => {
             break;
         case ActionType.STORE_IS_LOADING:
             newState.storeState = StoreState.LOADING;
+            return newState;
+            break;
+        case ActionType.UPDATED_COUNT:
+            let { count, remaining } = action.payload;
+            newState.count = count;
+            newState.remaining = remaining;
             return newState;
             break;
         default:

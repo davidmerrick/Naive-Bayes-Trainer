@@ -4,12 +4,16 @@ import Constants from "../constants/Constants";
 import {connect} from "react-redux";
 import StoreState from "../constants/StoreState";
 import Actions from "../actions/Actions";
+import io from 'socket.io-client'
+import SocketEvents from '../constants/SocketEvents'
 
 @connect(store => {
     return {
         storeState: store.storeState,
         error: store.error,
-        textItem: store.textItem
+        textItem: store.textItem,
+        count: store.count,
+        remaining: store.remaining
     };
 })
 class Client extends React.Component {
@@ -20,6 +24,14 @@ class Client extends React.Component {
 
     componentWillMount() {
         this.props.dispatch(Actions.initialize());
+    }
+
+    componentDidMount() {
+        let socket = io.connect(`http://localhost:${Constants.PORT}`);
+        socket.on('connection', console.log("Connected to websocket server"))
+        socket.on(SocketEvents.UPDATE_COUNT, data => {
+            this.props.dispatch(Actions.updateCount(data.count, data.remaining));
+        });
     }
 
     handleButtonClick(option){
@@ -35,6 +47,18 @@ class Client extends React.Component {
             buttons.push(newButton);
         });
         return buttons;
+    }
+
+    getCountText(){
+        let { count, remaining } = this.props;
+        let items = count === 1 ? "item" : "items";
+
+        if(!remaining){
+            return `Classified ${count} ${items}.`
+        } else {
+            let total = remaining + count;
+            return `Classified ${count}/${total} ${items}.`
+        }
     }
 
     render(){
@@ -56,10 +80,15 @@ class Client extends React.Component {
                         <h1>Classifying text:</h1>
                         <br />
                         <div id="classifier-view">
-                            {this.props.textItem.text}
+                            <div id="classifier-text">
+                                {this.props.textItem.text}
+                            </div>
                             <ButtonToolbar id="classifier-options">
                                 {this.getButtons()}
                             </ButtonToolbar>
+                        </div>
+                        <div id="count-view">
+                            {this.getCountText()}
                         </div>
                     </div>
                 );
