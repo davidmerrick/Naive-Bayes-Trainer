@@ -1,6 +1,14 @@
 const Constants = {
-    OPTION_ONE: "attack",
-    OPTION_TWO: "not_attack"
+    OPTIONS: [
+        {
+            anchorText: "Attack",
+            value: "attack"
+        },
+        {
+            anchorText: "Not Attack",
+            value: "not_attack"
+        }
+    ]
 };
 
 export default Constants

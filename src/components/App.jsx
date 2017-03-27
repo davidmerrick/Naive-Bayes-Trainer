@@ -26,10 +26,23 @@ class Client extends React.Component {
         this.props.dispatch(Actions.submitData(this.props.textItem, option));
     }
 
+    getButtons(){
+        let buttons = [];
+        Constants.OPTIONS.forEach(option => {
+            let newButton = <Button bsStyle="primary" onClick={() => this.handleButtonClick(option.value)}>
+                {option.anchorText}
+            </Button>;
+            buttons.push(newButton);
+        });
+        return buttons;
+    }
+
     render(){
         let { storeState } = this.props;
         switch(storeState) {
             case StoreState.LOADING:
+                return null;
+                break;
             case StoreState.EMPTY:
                 return(
                     <div>
@@ -39,22 +52,15 @@ class Client extends React.Component {
                 break;
             case StoreState.READY:
                 return (
-                    <div>
-                        {this.props.textItem.text}
-                        <ButtonToolbar>
-                            <Button
-                                bsStyle="primary"
-                                onClick={() => this.handleButtonClick(Constants.OPTION_ONE)}
-                            >
-                                    {Constants.OPTION_ONE}
-                            </Button>
-                            <Button
-                                bsStyle="primary"
-                                onClick={() => this.handleButtonClick(Constants.OPTION_TWO)}
-                            >
-                                    {Constants.OPTION_TWO}
-                            </Button>
-                        </ButtonToolbar>
+                    <div className="container-fluid" id="app-container">
+                        <h1>Classifying text:</h1>
+                        <br />
+                        <div id="classifier-view">
+                            {this.props.textItem.text}
+                            <ButtonToolbar id="classifier-options">
+                                {this.getButtons()}
+                            </ButtonToolbar>
+                        </div>
                     </div>
                 );
         }

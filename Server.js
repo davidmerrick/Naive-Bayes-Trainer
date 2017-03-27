@@ -66,5 +66,5 @@ app.post(Endpoints.CLASSIFICATIONS, (req, res) => {
 
 const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
+    console.log(`Web server started. Listening on http://localhost:${PORT}`);
 });
