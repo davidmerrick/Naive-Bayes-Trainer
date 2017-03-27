@@ -6,6 +6,7 @@ import StoreState from "../constants/StoreState";
 import Actions from "../actions/Actions";
 import io from 'socket.io-client'
 import SocketEvents from '../constants/SocketEvents'
+import Endpoints from '../constants/Endpoints'
 
 @connect(store => {
     return {
@@ -90,6 +91,7 @@ class Client extends React.Component {
                         <div id="count-view">
                             {this.getCountText()}
                         </div>
+                        <a href={`${Endpoints.CLASSIFICATIONS}/export`} download="classifier.json">Export classification</a>
                     </div>
                 );
         }
