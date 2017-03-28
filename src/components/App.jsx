@@ -76,13 +76,21 @@ class Client extends React.Component {
                 );
                 break;
             case StoreState.READY:
+                let {text} = this.props.textItem;
+                if(!text){
+                    return(
+                        <div className="container-fluid" id="app-container">
+                            <h1>Done classifying.</h1>
+                        </div>
+                    );
+                }
                 return (
                     <div className="container-fluid" id="app-container">
                         <h1>Classifying text:</h1>
                         <br />
                         <div id="classifier-view">
                             <div id="classifier-text">
-                                {this.props.textItem.text}
+                                {text}
                             </div>
                             <ButtonToolbar id="classifier-options">
                                 {this.getButtons()}

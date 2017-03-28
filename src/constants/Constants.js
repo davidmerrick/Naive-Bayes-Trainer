@@ -1,12 +1,12 @@
 const Constants = {
     OPTIONS: [
         {
-            anchorText: "Positive",
-            value: "positive"
+            anchorText: "Angry",
+            value: "angry"
         },
         {
-            anchorText: "Negative",
-            value: "negative"
+            anchorText: "Not Angry",
+            value: "not_angry"
         }
     ],
     PORT: 3000
