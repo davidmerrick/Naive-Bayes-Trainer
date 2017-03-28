@@ -1,12 +1,12 @@
 const Constants = {
     OPTIONS: [
         {
-            anchorText: "Angry",
-            value: "angry"
+            anchorText: "Bashing the Media",
+            value: "bashing_media"
         },
         {
-            anchorText: "Not Angry",
-            value: "not_angry"
+            anchorText: "Not Bashing the Media",
+            value: "not_bashing_media"
         }
     ],
     PORT: 3000

@@ -54,6 +54,12 @@ app.get(`${Endpoints.CLASSIFICATIONS}/export`, (req, res) => {
     res.json(JSON.parse(classifierJson));
 });
 
+// Endpoint to just dump the raw classification array. This is for fixing a case where a mistake was made.
+app.get(`${Endpoints.CLASSIFICATIONS}/export-raw`, (req, res) => {
+    res.json(classifications);
+});
+
+
 app.get(Endpoints.CLASSIFICATIONS, (req, res) => {
     res.json(classifications);
 });
