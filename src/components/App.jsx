@@ -7,14 +7,16 @@ import Actions from "../actions/Actions";
 import io from 'socket.io-client'
 import SocketEvents from '../constants/SocketEvents'
 import Endpoints from '../constants/Endpoints'
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
 
 @connect(store => {
     return {
-        storeState: store.storeState,
-        error: store.error,
-        textItem: store.textItem,
-        count: store.count,
-        remaining: store.remaining
+        store: store,
+        storeState: store.present.storeState,
+        error: store.present.error,
+        textItem: store.present.textItem,
+        count: store.present.count,
+        remaining: store.present.remaining
     };
 })
 class Client extends React.Component {
@@ -37,6 +39,10 @@ class Client extends React.Component {
 
     handleButtonClick(option){
         this.props.dispatch(Actions.submitData(this.props.textItem, option));
+    }
+
+    handleUndoButtonClick(){
+        this.props.dispatch(UndoActionCreators.undo());
     }
 
     getButtons(){
@@ -96,12 +102,22 @@ class Client extends React.Component {
                                 {this.getButtons()}
                             </ButtonToolbar>
                         </div>
+                        <br />
+                        <Button bsStyle="primary" onClick={() => this.handleUndoButtonClick()}>Undo</Button>
                         <div id="count-view">
                             {this.getCountText()}
                         </div>
                         <a href={`${Endpoints.CLASSIFICATIONS}/export`} download="classifier.json">Export classification</a>
                     </div>
                 );
+                break;
+            default:
+                return(
+                    <div>
+                        <h1>Error: Application state is invalid.</h1>
+                    </div>
+                );
+                break;
         }
     }
 }

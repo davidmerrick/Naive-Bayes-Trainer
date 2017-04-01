@@ -1,5 +1,6 @@
 import StoreState from '../constants/StoreState'
 import ActionType from '../constants/ActionType'
+import undoable, {distinctState} from 'redux-undo'
 
 const initialState = {
     textItem: null,
@@ -35,4 +36,8 @@ const Reducer = (state = initialState, action) => {
     }
 }
 
-export default Reducer
+const undoableReducer = undoable(Reducer, {
+    filter: distinctState()
+});
+
+export default undoableReducer
