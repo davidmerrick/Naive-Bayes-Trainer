@@ -58,6 +58,35 @@ class Actions {
         }
     }
 
+    static updateData(textItem, option){
+        let newClassification = new Classification(textItem, option);
+
+        return dispatch => {
+            async.series([
+                callback => {
+                    dispatch(this.storeIsLoading());
+                    callback();
+                },
+                callback => {
+                    axios.put(`${Endpoints.CLASSIFICATIONS}`, newClassification)
+                        .then(response => {
+                            callback();
+                        });
+                },
+                callback => {
+                    this.getNextTextItem(dispatchData => {
+                        dispatch(dispatchData);
+                        callback;
+                    });
+                },
+                callback => {
+                        dispatch(this.storeIsReady());
+                        callback;
+                }
+            ]);
+        }
+    }
+
     static storeIsLoading(){
         return {
             type: ActionType.STORE_IS_LOADING

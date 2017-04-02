@@ -12,6 +12,7 @@ import UndoRedo from './UndoRedo.jsx'
 
 @connect(store => {
     return {
+        inUndoState: store.TextItemReducer.future.length > 0,
         storeState: store.Reducer.storeState,
         error: store.Reducer.error,
         textItem: store.TextItemReducer.present.textItem,
@@ -38,7 +39,11 @@ class Client extends React.Component {
     }
 
     handleButtonClick(option){
-        this.props.dispatch(Actions.submitData(this.props.textItem, option));
+        if(this.props.inUndoState){
+            this.props.dispatch(Actions.updateData(this.props.textItem, option));
+        } else {
+            this.props.dispatch(Actions.submitData(this.props.textItem, option));
+        }
     }
 
     getButtons(){

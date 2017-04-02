@@ -54,34 +54,27 @@ app.get(`${Endpoints.CLASSIFICATIONS}/export`, (req, res) => {
     res.json(JSON.parse(classifierJson));
 });
 
-// Endpoint to just dump the raw classification array. This is for fixing a case where a mistake was made.
-app.get(`${Endpoints.CLASSIFICATIONS}/export-raw`, (req, res) => {
+app.get(Endpoints.CLASSIFICATIONS, (req, res) => {
     res.json(classifications);
 });
 
+app.put(Endpoints.CLASSIFICATIONS, (req, res) => {
+    let newClassification = req.body;
 
-app.get(Endpoints.CLASSIFICATIONS, (req, res) => {
-    res.json(classifications);
+    let index = classifications.findIndex(item => item.textItem.id === newClassification.textItem.id);
+    classifications[index] = newClassification;
+
+    res.json(newClassification);
 });
 
 app.post(Endpoints.CLASSIFICATIONS, (req, res) => {
     let newClassification = req.body;
 
-    // Check if item already exists. If so, replace it
-    if (classifications.length > 0){
-        let cIndex = classifications.findIndex(item => item.textItem.id === newClassification.textItem.id);
-        if (cIndex != -1) {
-            classifications[cIndex] = newClassification;
-        } else {
-            classifications.push(newClassification);
-        }
-    } else {
-        classifications.push(newClassification);
-    }
+    classifications.push(newClassification);
 
     // Remove the item from the array
-    let tIndex = textItems.findIndex(item => item.id === newClassification.textItem.id)
-    textItems.splice(tIndex, 1);
+    let index = textItems.findIndex(item => item.id === newClassification.textItem.id)
+    textItems.splice(index, 1);
 
     // Push updated count to connected client(s)
     ioServer.emit(SocketEvents.UPDATE_COUNT, { count: classifications.length, remaining: textItems.length });
