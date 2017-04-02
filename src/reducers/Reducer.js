@@ -2,7 +2,6 @@ import StoreState from '../constants/StoreState'
 import ActionType from '../constants/ActionType'
 
 const initialState = {
-    textItem: null,
     storeState: StoreState.EMPTY,
     error: null,
     count: 0,
@@ -21,6 +20,10 @@ const Reducer = (state = initialState, action) => {
             break;
         case ActionType.STORE_IS_LOADING:
             newState.storeState = StoreState.LOADING;
+            return newState;
+            break;
+        case ActionType.STORE_IS_READY:
+            newState.storeState = StoreState.READY;
             return newState;
             break;
         case ActionType.UPDATED_COUNT:
