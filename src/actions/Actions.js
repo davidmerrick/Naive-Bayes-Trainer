@@ -49,12 +49,22 @@ class Actions {
                         dispatch(dispatchData);
                         callback;
                     });
+                },
+                callback => {
+                        dispatch(this.storeIsReady());
+                        callback;
                 }
             ]);
         }
     }
 
     static storeIsLoading(){
+        return {
+            type: ActionType.STORE_IS_LOADING
+        }
+    }
+
+    static storeIsReady(){
         return {
             type: ActionType.STORE_IS_LOADING
         }

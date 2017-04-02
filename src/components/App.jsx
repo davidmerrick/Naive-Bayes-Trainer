@@ -4,19 +4,19 @@ import Constants from "../constants/Constants";
 import {connect} from "react-redux";
 import StoreState from "../constants/StoreState";
 import Actions from "../actions/Actions";
-import io from 'socket.io-client'
-import SocketEvents from '../constants/SocketEvents'
-import Endpoints from '../constants/Endpoints'
-import { ActionCreators as UndoActionCreators } from 'redux-undo'
+import io from "socket.io-client";
+import SocketEvents from "../constants/SocketEvents";
+import Endpoints from "../constants/Endpoints";
+import UndoRedo from './UndoRedo.jsx'
+
 
 @connect(store => {
     return {
-        store: store,
-        storeState: store.present.storeState,
-        error: store.present.error,
-        textItem: store.present.textItem,
-        count: store.present.count,
-        remaining: store.present.remaining
+        storeState: store.Reducer.storeState,
+        error: store.Reducer.error,
+        textItem: store.TextItemReducer.present.textItem,
+        count: store.Reducer.count,
+        remaining: store.Reducer.remaining
     };
 })
 class Client extends React.Component {
@@ -39,10 +39,6 @@ class Client extends React.Component {
 
     handleButtonClick(option){
         this.props.dispatch(Actions.submitData(this.props.textItem, option));
-    }
-
-    handleUndoButtonClick(){
-        this.props.dispatch(UndoActionCreators.undo());
     }
 
     getButtons(){
@@ -103,7 +99,7 @@ class Client extends React.Component {
                             </ButtonToolbar>
                         </div>
                         <br />
-                        <Button bsStyle="primary" onClick={() => this.handleUndoButtonClick()}>Undo</Button>
+                        <UndoRedo />
                         <div id="count-view">
                             {this.getCountText()}
                         </div>

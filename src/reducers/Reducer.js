@@ -1,9 +1,7 @@
 import StoreState from '../constants/StoreState'
 import ActionType from '../constants/ActionType'
-import undoable, {distinctState} from 'redux-undo'
 
 const initialState = {
-    textItem: null,
     storeState: StoreState.EMPTY,
     error: null,
     count: 0,
@@ -24,6 +22,10 @@ const Reducer = (state = initialState, action) => {
             newState.storeState = StoreState.LOADING;
             return newState;
             break;
+        case ActionType.STORE_IS_READY:
+            newState.storeState = StoreState.READY;
+            return newState;
+            break;
         case ActionType.UPDATED_COUNT:
             let { count, remaining } = action.payload;
             newState.count = count;
@@ -36,8 +38,4 @@ const Reducer = (state = initialState, action) => {
     }
 }
 
-const undoableReducer = undoable(Reducer, {
-    filter: distinctState()
-});
-
-export default undoableReducer
+export default Reducer
