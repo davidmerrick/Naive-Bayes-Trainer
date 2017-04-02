@@ -4,17 +4,19 @@ import Constants from "../constants/Constants";
 import {connect} from "react-redux";
 import StoreState from "../constants/StoreState";
 import Actions from "../actions/Actions";
-import io from 'socket.io-client'
-import SocketEvents from '../constants/SocketEvents'
-import Endpoints from '../constants/Endpoints'
+import io from "socket.io-client";
+import SocketEvents from "../constants/SocketEvents";
+import Endpoints from "../constants/Endpoints";
+import UndoRedo from './UndoRedo.jsx'
+
 
 @connect(store => {
     return {
-        storeState: store.storeState,
-        error: store.error,
-        textItem: store.textItem,
-        count: store.count,
-        remaining: store.remaining
+        storeState: store.Reducer.storeState,
+        error: store.Reducer.error,
+        textItem: store.TextItemReducer.present.textItem,
+        count: store.Reducer.count,
+        remaining: store.Reducer.remaining
     };
 })
 class Client extends React.Component {
@@ -52,7 +54,7 @@ class Client extends React.Component {
 
     getCountText(){
         let { count, remaining } = this.props;
-        let items = count === 1 ? "item" : "items";
+        let items = "items";
 
         if(!remaining){
             return `Classified ${count} ${items}.`
@@ -96,12 +98,22 @@ class Client extends React.Component {
                                 {this.getButtons()}
                             </ButtonToolbar>
                         </div>
+                        <br />
+                        <UndoRedo />
                         <div id="count-view">
                             {this.getCountText()}
                         </div>
                         <a href={`${Endpoints.CLASSIFICATIONS}/export`} download="classifier.json">Export classification</a>
                     </div>
                 );
+                break;
+            default:
+                return(
+                    <div>
+                        <h1>Error: Application state is invalid.</h1>
+                    </div>
+                );
+                break;
         }
     }
 }

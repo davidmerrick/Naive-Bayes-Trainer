@@ -1,8 +1,12 @@
 import Reducer from '../reducers/Reducer'
+import TextItemReducer from '../reducers/TextItemReducer'
 import thunk from 'redux-thunk'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 
-const Store = createStore(Reducer, applyMiddleware(thunk));
+let reducers = combineReducers({
+    Reducer, TextItemReducer
+});
+const Store = createStore(reducers, applyMiddleware(thunk));
 
 export default Store
 
