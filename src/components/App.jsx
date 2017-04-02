@@ -54,7 +54,7 @@ class Client extends React.Component {
 
     getCountText(){
         let { count, remaining } = this.props;
-        let items = count === 1 ? "item" : "items";
+        let items = "items";
 
         if(!remaining){
             return `Classified ${count} ${items}.`

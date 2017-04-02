@@ -60,11 +60,22 @@ app.get(Endpoints.CLASSIFICATIONS, (req, res) => {
 
 app.post(Endpoints.CLASSIFICATIONS, (req, res) => {
     let newClassification = req.body;
-    classifications.push(newClassification);
+
+    // Check if item already exists. If so, replace it
+    if (classifications.length > 0){
+        let cIndex = classifications.findIndex(item => item.textItem.id === newClassification.textItem.id);
+        if (cIndex != -1) {
+            classifications[cIndex] = newClassification;
+        } else {
+            classifications.push(newClassification);
+        }
+    } else {
+        classifications.push(newClassification);
+    }
 
     // Remove the item from the array
-    let index = textItems.findIndex(item => item.id === newClassification.textItem.id)
-    textItems.splice(index, 1);
+    let tIndex = textItems.findIndex(item => item.id === newClassification.textItem.id)
+    textItems.splice(tIndex, 1);
 
     // Push updated count to connected client(s)
     ioServer.emit(SocketEvents.UPDATE_COUNT, { count: classifications.length, remaining: textItems.length });
