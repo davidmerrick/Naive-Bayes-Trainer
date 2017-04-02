@@ -64,6 +64,7 @@ app.put(Endpoints.CLASSIFICATIONS, (req, res) => {
     let index = classifications.findIndex(item => item.textItem.id === newClassification.textItem.id);
     classifications[index] = newClassification;
 
+    console.log(`Updated classification: ${newClassification.textItem.text}, ${newClassification.option}`);
     res.json(newClassification);
 });
 
