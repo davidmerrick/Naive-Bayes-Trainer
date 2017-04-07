@@ -9,8 +9,8 @@ module.exports = grunt => {
                         plugins: ['transform-decorators-legacy', 'transform-object-rest-spread']
                     }]]
                 },
-                src: 'src/app/Client.jsx',
-                dest: 'public/js/client-bundle.js'
+                src: 'src/app/Root.jsx',
+                dest: 'public/js/bundle.js'
             }
         },
         watch: {
@@ -26,7 +26,7 @@ module.exports = grunt => {
         uglify: {
             client: {
                 files: {
-                    'public/js/client-bundle.js': ['public/js/client-bundle.js']
+                    'public/js/bundle.js': ['public/js/bundle.js']
                 }
             }
         }

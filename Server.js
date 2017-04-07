@@ -38,6 +38,10 @@ app.get(`${Endpoints.CLASSIFICATIONS}/count`, (req, res) => {
     res.send(`${classifications.length}`);
 });
 
+app.get('/*', (req,res) => {
+    res.sendfile(path.join(__dirname, 'index.html'))
+})
+
 app.get(`${Endpoints.TEXTS}/next`, (req, res) => {
     let random = Math.floor(Math.random() * textItems.length);
     res.json(textItems[random]);
