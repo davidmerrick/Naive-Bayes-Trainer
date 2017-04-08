@@ -9,6 +9,7 @@ import http from "http";
 import io from "socket.io";
 import Constants from './src/constants/Constants'
 import SocketEvents from './src/constants/SocketEvents'
+import path from 'path'
 
 const app = express();
 const server = http.createServer(app);
@@ -34,13 +35,17 @@ try {
     process.exit();
 }
 
+function getTrainedClassifier(){
+    let classifier = bayes();
+    classifications.forEach(item => {
+        classifier.learn(item.textItem.text, item.option);
+    });
+    return classifier;
+}
+
 app.get(`${Endpoints.CLASSIFICATIONS}/count`, (req, res) => {
     res.send(`${classifications.length}`);
 });
-
-app.get('/*', (req,res) => {
-    res.sendfile(path.join(__dirname, 'index.html'))
-})
 
 app.get(`${Endpoints.TEXTS}/next`, (req, res) => {
     let random = Math.floor(Math.random() * textItems.length);
@@ -48,11 +53,7 @@ app.get(`${Endpoints.TEXTS}/next`, (req, res) => {
 });
 
 app.get(`${Endpoints.CLASSIFICATIONS}/export`, (req, res) => {
-    let classifier = bayes();
-    classifications.forEach(item => {
-        classifier.learn(item.textItem.text, item.option);
-    });
-
+    let classifier = getTrainedClassifier();
     let classifierJson = classifier.toJson();
 
     res.json(JSON.parse(classifierJson));
@@ -86,6 +87,19 @@ app.post(Endpoints.CLASSIFICATIONS, (req, res) => {
 
     console.log(`New classification added: ${newClassification.textItem.text}, ${newClassification.option}`);
     res.json(newClassification);
+});
+
+app.post(Endpoints.TEST, (req, res) => {
+    let jsonData = req.body;
+    let testText = jsonData.text;
+
+    let classifier = getTrainedClassifier();
+    let result = classifier.categorize(testText);
+    let responseObject = {
+        text: testText,
+        result: result
+    };
+    res.send(responseObject);
 });
 
 // Add WebSocket server for sending the count back
