@@ -2,7 +2,6 @@ import Endpoints from '../constants/Endpoints'
 import ActionType from '../constants/ActionType'
 import TextItem from '../models/TextItem'
 import axios from 'axios'
-import Classification from '../models/Classification'
 import async from 'async'
 
 class Actions {
@@ -29,37 +28,8 @@ class Actions {
         });
     }
 
-    static submitData(textItem, option){
-        let newClassification = new Classification(textItem, option);
-
-        return dispatch => {
-            async.series([
-                callback => {
-                    dispatch(this.storeIsLoading());
-                    callback();
-                },
-                callback => {
-                    axios.post(`${Endpoints.CLASSIFICATIONS}`, newClassification)
-                        .then(response => {
-                            callback();
-                        });
-                },
-                callback => {
-                    this.getNextTextItem(dispatchData => {
-                        dispatch(dispatchData);
-                        callback;
-                    });
-                },
-                callback => {
-                        dispatch(this.storeIsReady());
-                        callback;
-                }
-            ]);
-        }
-    }
-
     static updateData(textItem, option){
-        let newClassification = new Classification(textItem, option);
+        textItem.classification = option;
 
         return dispatch => {
             async.series([
@@ -68,7 +38,7 @@ class Actions {
                     callback();
                 },
                 callback => {
-                    axios.put(`${Endpoints.CLASSIFICATIONS}`, newClassification)
+                    axios.put(`${Endpoints.TEXTS}/${textItem.id}`, textItem)
                         .then(response => {
                             callback();
                         });

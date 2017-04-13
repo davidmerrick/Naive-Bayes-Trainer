@@ -12,7 +12,6 @@ import UndoRedo from './UndoRedo.jsx'
 
 @connect(store => {
     return {
-        inUndoState: store.TextItemReducer.future.length > 0,
         storeState: store.Reducer.storeState,
         error: store.Reducer.error,
         textItem: store.TextItemReducer.present.textItem,
@@ -20,7 +19,7 @@ import UndoRedo from './UndoRedo.jsx'
         remaining: store.Reducer.remaining
     };
 })
-class Client extends React.Component {
+class Classifier extends React.Component {
 
     constructor(props){
         super(props);
@@ -39,11 +38,7 @@ class Client extends React.Component {
     }
 
     handleButtonClick(option){
-        if(this.props.inUndoState){
-            this.props.dispatch(Actions.updateData(this.props.textItem, option));
-        } else {
-            this.props.dispatch(Actions.submitData(this.props.textItem, option));
-        }
+        this.props.dispatch(Actions.updateData(this.props.textItem, option));
     }
 
     getButtons(){
@@ -123,8 +118,8 @@ class Client extends React.Component {
     }
 }
 
-Client.defaultProps = {
+Classifier.defaultProps = {
     textItem: null
 }
 
-export default Client
+export default Classifier

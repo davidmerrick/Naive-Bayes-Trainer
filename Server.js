@@ -7,9 +7,8 @@ import TextItem from "./src/models/TextItem";
 import uuidV4 from "uuid/v4";
 import http from "http";
 import io from "socket.io";
-import Constants from './src/constants/Constants'
-import SocketEvents from './src/constants/SocketEvents'
-import path from 'path'
+import Constants from "./src/constants/Constants";
+import SocketEvents from "./src/constants/SocketEvents";
 
 const app = express();
 const server = http.createServer(app);
@@ -19,8 +18,9 @@ app.use(express.static("public"));
 app.use(express.static("node_modules/bootstrap/dist"));
 app.use(BodyParser.json());
 
-let classifications = [];
-let textItems = [];
+
+// Todo: Index all texts by ID, for easy lookup.
+let texts = [];
 
 try {
     let data = fs.readFileSync("conf/data.json", 'utf8');
@@ -28,7 +28,7 @@ try {
     dataObject.forEach(text => {
          let id = uuidV4();
          let textItem = new TextItem(id, text);
-         textItems.push(textItem);
+         texts.push(textItem);
     });
 } catch(e) {
     console.log('Error reading conf/data.json file:', e.stack);
@@ -37,22 +37,36 @@ try {
 
 function getTrainedClassifier(){
     let classifier = bayes();
-    classifications.forEach(item => {
+    texts
+        .filter(item => item.classification != null)
+        .forEach(item => {
         classifier.learn(item.textItem.text, item.option);
     });
     return classifier;
 }
 
-app.get(`${Endpoints.CLASSIFICATIONS}/count`, (req, res) => {
-    res.send(`${classifications.length}`);
+function getCount(){
+    let classifiedLength = texts.filter(item => item.classification != null).length;
+    let count = {
+        classified: classifiedLength,
+        total: texts.length,
+        remaining: texts.length - classifiedLength
+    }
+    return count;
+}
+
+app.get(`${Endpoints.TEXTS}/count`, (req, res) => {
+    let count = getCount();
+
+    res.json(count);
 });
 
 app.get(`${Endpoints.TEXTS}/next`, (req, res) => {
-    let random = Math.floor(Math.random() * textItems.length);
-    res.json(textItems[random]);
+    let random = Math.floor(Math.random() * texts.length);
+    res.json(texts[random]);
 });
 
-app.get(`${Endpoints.CLASSIFICATIONS}/export`, (req, res) => {
+app.get(`${Endpoints.CLASSIFICATIONS}`, (req, res) => {
     let classifier = getTrainedClassifier();
     let classifierJson = classifier.toJson();
 
@@ -63,30 +77,19 @@ app.get(Endpoints.CLASSIFICATIONS, (req, res) => {
     res.json(classifications);
 });
 
-app.put(Endpoints.CLASSIFICATIONS, (req, res) => {
-    let newClassification = req.body;
+app.put(`${Endpoints.TEXTS}/:id`, (req, res) => {
+    let id = req.params.id;
+    let textItem = req.body;
 
-    let index = classifications.findIndex(item => item.textItem.id === newClassification.textItem.id);
-    classifications[index] = newClassification;
-
-    console.log(`Updated classification: ${newClassification.textItem.text}, ${newClassification.option}`);
-    res.json(newClassification);
-});
-
-app.post(Endpoints.CLASSIFICATIONS, (req, res) => {
-    let newClassification = req.body;
-
-    classifications.push(newClassification);
-
-    // Remove the item from the array
-    let index = textItems.findIndex(item => item.id === newClassification.textItem.id)
-    textItems.splice(index, 1);
+    let index = texts.findIndex(item => item.id === id);
+    texts[index] = textItem;
 
     // Push updated count to connected client(s)
-    ioServer.emit(SocketEvents.UPDATE_COUNT, { count: classifications.length, remaining: textItems.length });
+    let count = getCount();
+    ioServer.emit(SocketEvents.UPDATE_COUNT, { count: count.classified, remaining: count.remaining });
 
-    console.log(`New classification added: ${newClassification.textItem.text}, ${newClassification.option}`);
-    res.json(newClassification);
+    console.log(`New classification added: ${textItem.text}, ${textItem.classification}`);
+    res.json(textItem);
 });
 
 app.post(Endpoints.TEST, (req, res) => {
@@ -106,7 +109,8 @@ app.post(Endpoints.TEST, (req, res) => {
 ioServer.on('connection', socket => {
     console.log('WebSocket client connected');
 
-    ioServer.emit(SocketEvents.UPDATE_COUNT, { count: classifications.length, remaining: textItems.length });
+    let count = getCount();
+    ioServer.emit(SocketEvents.UPDATE_COUNT, { count: count.classified, remaining: count.remaining });
 
     socket.on('disconnect', () => {
         console.log('WebSocket client disconnected');

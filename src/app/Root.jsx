@@ -28,4 +28,4 @@ class Root extends React.Component {
 
 ReactDOM.render(<Root />, document.getElementById('app'));
 
-export default Client
+export default Root
