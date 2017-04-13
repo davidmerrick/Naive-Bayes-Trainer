@@ -40,7 +40,7 @@ function getTrainedClassifier(){
     texts
         .filter(item => item.classification != null)
         .forEach(item => {
-            classifier.learn(item.text, item.option);
+            classifier.learn(item.text, item.classification);
         });
     return classifier;
 }

@@ -4,7 +4,8 @@ const ActionType = keyMirror({
     GET_NEXT_TEXT_FULFILLED: null,
     STORE_IS_LOADING: null,
     STORE_IS_READY: null,
-    UPDATED_COUNT: null
+    UPDATED_COUNT: null,
+    GET_TEST_RESULT_FULFILLED: null
 });
 
 export default ActionType

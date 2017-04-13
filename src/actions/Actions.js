@@ -98,6 +98,21 @@ class Actions {
             }
         }
     }
+
+    static test(testText){
+        return dispatch => {
+            axios.post(`${Endpoints.TEST}`, { text: testText })
+                .then(response => {
+                    let action = {
+                        type: ActionType.GET_TEST_RESULT_FULFILLED,
+                        payload: {
+                            testResult: response.data
+                        }
+                    };
+                    dispatch(action);
+                });
+        }
+    }
 }
 
 export default Actions
