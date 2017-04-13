@@ -1,11 +1,13 @@
 import React from 'react'
 import {Button} from "react-bootstrap";
-import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import { connect } from 'react-redux'
+import Actions from '../actions/Actions'
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
 
 @connect(store => {
     return {
-        canUndo: store.TextItemReducer.past.length > 2
+        past: store.TextItemReducer.past,
+        canUndo: store.TextItemReducer.past.length > 1
     };
 })
 class UndoRedo extends React.Component {
@@ -15,8 +17,10 @@ class UndoRedo extends React.Component {
     }
 
     handleClick(){
-        let undoAction = UndoActionCreators.undo();
-        this.props.dispatch(undoAction);
+        let past = this.props.past;
+        let length = this.props.past.length;
+        let previousTextItem = past[length - 1].textItem;
+        this.props.dispatch(Actions.undo(previousTextItem));
     }
 
     render() {

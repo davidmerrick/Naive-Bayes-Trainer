@@ -3,6 +3,7 @@ import ActionType from '../constants/ActionType'
 import TextItem from '../models/TextItem'
 import axios from 'axios'
 import async from 'async'
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
 
 class Actions {
 
@@ -52,6 +53,25 @@ class Actions {
                 callback => {
                         dispatch(this.storeIsReady());
                         callback;
+                }
+            ]);
+        }
+    }
+
+    static undo(previousTextItem){
+        return dispatch => {
+            async.series([
+                callback => {
+                    previousTextItem.classification = null;
+                    axios.put(`${Endpoints.TEXTS}/${previousTextItem.id}`, previousTextItem)
+                        .then(response => {
+                            callback();
+                        });
+                },
+                callback => {
+                    let undoAction = UndoActionCreators.undo();
+                    dispatch(undoAction);
+                    callback();
                 }
             ]);
         }

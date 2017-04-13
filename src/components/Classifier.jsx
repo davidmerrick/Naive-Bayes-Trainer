@@ -38,7 +38,8 @@ class Classifier extends React.Component {
     }
 
     handleButtonClick(option){
-        this.props.dispatch(Actions.updateData(this.props.textItem, option));
+        let { textItem } = this.props;
+        this.props.dispatch(Actions.updateData(textItem, option));
     }
 
     getButtons(){
@@ -103,7 +104,7 @@ class Classifier extends React.Component {
                         <div id="count-view">
                             {this.getCountText()}
                         </div>
-                        <a href={`${Endpoints.CLASSIFICATIONS}/export`} download="classifier.json">Export classification</a>
+                        <a href={`${Endpoints.CLASSIFICATIONS}`} download="classifier.json">Export classification</a>
                     </div>
                 );
                 break;

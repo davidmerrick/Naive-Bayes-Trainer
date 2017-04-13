@@ -1,5 +1,5 @@
 import ActionType from "../constants/ActionType";
-import undoable, {distinctState} from "redux-undo";
+import undoable, {distinctState, includeAction} from "redux-undo";
 
 const initialState = {
     textItem: null
@@ -21,7 +21,8 @@ const TextItemReducer = (state = initialState, action) => {
 }
 
 const undoableReducer = undoable(TextItemReducer, {
-    filter: distinctState()
+    filter: distinctState(),
+    filter: includeAction([ActionType.GET_NEXT_TEXT_FULFILLED])
 });
 
 export default undoableReducer
