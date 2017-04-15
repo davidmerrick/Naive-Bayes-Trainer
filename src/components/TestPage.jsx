@@ -1,7 +1,9 @@
 import React from 'react'
-import {Button} from "react-bootstrap";
+import {Button, ButtonToolbar} from "react-bootstrap";
 import {connect} from "react-redux";
 import Actions from '../actions/Actions'
+import Constants from '../constants/Constants'
+import TextItem from '../models/TextItem'
 
 @connect(store => {
     return {
@@ -24,6 +26,23 @@ class TestPage extends React.Component {
         });
     }
 
+    handleButtonClick(option){
+        let textItem = new TextItem(null, this.state.value);
+        this.props.dispatch(Actions.postData(textItem, option));
+    }
+
+    getButtons(){
+        let buttons = [];
+        Constants.OPTIONS.forEach(option => {
+            let newButton = <Button bsStyle="primary" onClick={() => this.handleButtonClick(option.value)}>
+                {option.anchorText}
+            </Button>;
+            buttons.push(newButton);
+        });
+        return buttons;
+    }
+
+
     handleSubmit(event) {
         this.props.dispatch(Actions.test(this.state.value));
         event.preventDefault();
@@ -38,6 +57,12 @@ class TestPage extends React.Component {
             <div>
                 Test Result for "{testResult.text}": <br />
                 {testResult.result}
+                <br />
+                <h2>Actual classification?</h2>
+                <br />
+                <ButtonToolbar>
+                    {this.getButtons()}
+                </ButtonToolbar>
             </div>
         );
     }
@@ -47,8 +72,10 @@ class TestPage extends React.Component {
             <div className="container-fluid" id="app-container">
                 <h1>Test Page</h1>
                 {this.formatResult()}
+                <br />
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" value={this.state.value} onChange={this.handleChange}/>
+                    <br />
                     <br />
                     <Button type="submit" bsStyle="primary">
                         Test

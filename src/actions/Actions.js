@@ -58,6 +58,25 @@ class Actions {
         }
     }
 
+    static postData(textItem, option){
+        textItem.classification = option;
+
+        return dispatch => {
+            async.series([
+                callback => {
+                    axios.post(`${Endpoints.TEXTS}`, textItem)
+                        .then(response => {
+                            callback();
+                        });
+                },
+                callback => {
+                    dispatch(ActionType.POSTED_CLASSIFICATION_FULFILLED);
+                    callback();
+                }
+            ]);
+        }
+    }
+
     static undo(previousTextItem){
         return dispatch => {
             async.series([

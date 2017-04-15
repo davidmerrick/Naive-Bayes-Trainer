@@ -13,6 +13,10 @@ const Reducer = (state = initialState, action) => {
             newState.testResult = testResult;
             return newState;
             break;
+        case ActionType.POSTED_CLASSIFICATION_FULFILLED:
+            console.log("Posted data");
+            return newState;
+            break;
         default:
             return newState;
             break;

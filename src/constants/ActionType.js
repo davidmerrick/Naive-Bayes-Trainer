@@ -5,7 +5,8 @@ const ActionType = keyMirror({
     STORE_IS_LOADING: null,
     STORE_IS_READY: null,
     UPDATED_COUNT: null,
-    GET_TEST_RESULT_FULFILLED: null
+    GET_TEST_RESULT_FULFILLED: null,
+    POSTED_CLASSIFICATION_FULFILLED: null
 });
 
 export default ActionType
