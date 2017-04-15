@@ -93,6 +93,21 @@ app.put(`${Endpoints.TEXTS}/:id`, (req, res) => {
     res.json(textItem);
 });
 
+app.post(`${Endpoints.TEXTS}`, (req, res) => {
+    let id = uuidV4();
+    let textItem = req.body;
+    textItem.id = id;
+
+    texts.push(textItem);
+
+    // Push updated count to connected client(s)
+    let count = getCount();
+    ioServer.emit(SocketEvents.UPDATE_COUNT, { count: count.classified, remaining: count.remaining });
+
+    console.log(`New classification added: ${textItem.text}, ${textItem.classification}`);
+    res.json(textItem);
+});
+
 app.post(Endpoints.TEST, (req, res) => {
     let jsonData = req.body;
     let testText = jsonData.text;
