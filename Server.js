@@ -62,8 +62,9 @@ app.get(`${Endpoints.TEXTS}/count`, (req, res) => {
 });
 
 app.get(`${Endpoints.TEXTS}/next`, (req, res) => {
-    let random = Math.floor(Math.random() * texts.length);
-    res.json(texts[random]);
+    let nonClassifiedTexts = texts.filter(item => item.classification == null);
+    let random = Math.floor(Math.random() * nonClassifiedTexts.length);
+    res.json(nonClassifiedTexts[random]);
 });
 
 app.get(`${Endpoints.CLASSIFICATIONS}`, (req, res) => {

@@ -84,6 +84,7 @@ class Classifier extends React.Component {
                     return(
                         <div className="container-fluid" id="app-container">
                             <h1>Done classifying.</h1>
+                            <a href={`${Endpoints.CLASSIFICATIONS}`} download="classifier.json">Export classification</a>
                         </div>
                     );
                 }
