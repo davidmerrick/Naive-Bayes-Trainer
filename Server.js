@@ -121,6 +121,11 @@ app.post(Endpoints.TEST, (req, res) => {
     res.send(responseObject);
 });
 
+// Always return the main index.html, so react-router render the route in the client
+app.get('*', function(req, res) {
+    res.sendfile('public/index.html'); // load our public/index.html file
+});
+
 // Add WebSocket server for sending the count back
 ioServer.on('connection', socket => {
     console.log('WebSocket client connected');
