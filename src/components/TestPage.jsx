@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, ButtonToolbar} from "react-bootstrap";
+import {Button, ButtonToolbar, FormControl} from "react-bootstrap";
 import {connect} from "react-redux";
 import Actions from '../actions/Actions'
 import Constants from '../constants/Constants'
@@ -90,7 +90,14 @@ class TestPage extends React.Component {
                         <h1>Test Page</h1>
                         <br />
                         <form onSubmit={this.handleSubmit}>
-                            <input type="text" value={this.state.value} onChange={this.handleChange}/>
+                            <FormControl
+                                id="test-input"
+                                componentClass="textarea"
+                                value={this.state.value}
+                                onChange={this.handleChange}
+                                bsSize="large"
+                                style={{height: '200px'}}
+                            />
                             <br />
                             <br />
                             <Button type="submit" bsStyle="primary">

@@ -12,7 +12,7 @@ class Root extends React.Component {
             <Provider store={Store}>
                 <Router>
                     <div>
-                        <ul>
+                        <ul id="main-nav">
                             <li><Link to="/">Home</Link></li>
                             <li><Link to="/Test">Test</Link></li>
                         </ul>

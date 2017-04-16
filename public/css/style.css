@@ -17,3 +17,16 @@ div#count-view {
 div#classifier-text {
     height: 75px;
 }
+
+ul#main-nav {
+    list-style-type: none;
+}
+
+ul#main-nav li {
+    float: left;
+    margin-right: 20px;
+}
+
+input#test-input {
+
+}

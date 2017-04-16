@@ -59030,7 +59030,7 @@ var Root = function (_React$Component) {
                             null,
                             _react2["default"].createElement(
                                 "ul",
-                                null,
+                                { id: "main-nav" },
                                 _react2["default"].createElement(
                                     "li",
                                     null,
@@ -59526,7 +59526,14 @@ var TestPage = (_dec = (0, _reactRedux.connect)(function (store) {
                             _react2["default"].createElement(
                                 "form",
                                 { onSubmit: this.handleSubmit },
-                                _react2["default"].createElement("input", { type: "text", value: this.state.value, onChange: this.handleChange }),
+                                _react2["default"].createElement(_reactBootstrap.FormControl, {
+                                    id: "test-input",
+                                    componentClass: "textarea",
+                                    value: this.state.value,
+                                    onChange: this.handleChange,
+                                    bsSize: "large",
+                                    style: { height: '200px' }
+                                }),
                                 _react2["default"].createElement("br", null),
                                 _react2["default"].createElement("br", null),
                                 _react2["default"].createElement(
