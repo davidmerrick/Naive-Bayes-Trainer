@@ -1,7 +1,9 @@
 import ActionType from "../constants/ActionType";
+import {TestPageState as PageState} from '../constants/TestPageState'
 
 const initialState = {
-    testResult: null
+    testResult: null,
+    storeState: PageState.READY
 };
 
 const Reducer = (state = initialState, action) => {

@@ -4,10 +4,12 @@ import {connect} from "react-redux";
 import Actions from '../actions/Actions'
 import Constants from '../constants/Constants'
 import TextItem from '../models/TextItem'
+import {TestPageState as PageState} from '../constants/TestPageState'
 
 @connect(store => {
     return {
-        testResult: store.TestReducer.testResult
+        testResult: store.TestReducer.testResult,
+        storeState: store.TestReducer.storeState
     };
 })
 
