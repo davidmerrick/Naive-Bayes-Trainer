@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import Actions from '../actions/Actions'
 import Constants from '../constants/Constants'
 import TextItem from '../models/TextItem'
-import {TestPageState as PageState} from '../constants/TestPageState'
+import TestStoreState from '../constants/TestStoreState'
 
 @connect(store => {
     return {
@@ -50,41 +50,57 @@ class TestPage extends React.Component {
         event.preventDefault();
     }
 
-    formatResult(){
-        let { testResult } = this.props;
-        if(!testResult){
-            return null;
-        }
-        return(
-            <div>
-                Test Result for "{testResult.text}": <br />
-                {testResult.result}
-                <br />
-                <h2>Actual classification?</h2>
-                <br />
-                <ButtonToolbar>
-                    {this.getButtons()}
-                </ButtonToolbar>
-            </div>
-        );
-    }
-
     render(){
-        return (
-            <div className="container-fluid" id="app-container">
-                <h1>Test Page</h1>
-                {this.formatResult()}
-                <br />
-                <form onSubmit={this.handleSubmit}>
-                    <input type="text" value={this.state.value} onChange={this.handleChange}/>
-                    <br />
-                    <br />
-                    <Button type="submit" bsStyle="primary">
-                        Test
-                    </Button>
-                </form>
-            </div>
-        );
+        let { storeState } = this.props;
+        switch(storeState) {
+            case TestStoreState.GOT_RESULT:
+                let { testResult } = this.props;
+                return(
+                    <div>
+                        <h1>Test Page</h1>
+                        <div>
+                            Test Result for "{testResult.text}": <br />
+                            {testResult.result}
+                            <br />
+                            <h2>Actual classification?</h2>
+                            <br />
+                            <ButtonToolbar>
+                                {this.getButtons()}
+                            </ButtonToolbar>
+                        </div>
+                    </div>
+                );
+                break;
+            case TestStoreState.POSTED_ITEM:
+                setTimeout(() => {
+                    this.props.dispatch(Actions.testStoreIsReady());
+                }, 3000);
+
+                return(
+                    <div>
+                        <h1>Test Page</h1>
+                        <p>Posted new item.</p>
+                    </div>
+                );
+                break;
+            case TestStoreState.READY:
+            default:
+                return (
+                    <div>
+                        <h1>Test Page</h1>
+                        <br />
+                        <form onSubmit={this.handleSubmit}>
+                            <input type="text" value={this.state.value} onChange={this.handleChange}/>
+                            <br />
+                            <br />
+                            <Button type="submit" bsStyle="primary">
+                                Test
+                            </Button>
+                        </form>
+                    </div>
+                );
+                break;
+        };
     }
 }
 

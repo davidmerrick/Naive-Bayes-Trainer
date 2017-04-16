@@ -70,7 +70,9 @@ class Actions {
                         });
                 },
                 callback => {
-                    dispatch(ActionType.POSTED_CLASSIFICATION_FULFILLED);
+                    dispatch({
+                        type: ActionType.POSTED_CLASSIFICATION_FULFILLED
+                    });
                     callback();
                 }
             ]);
@@ -105,6 +107,12 @@ class Actions {
     static storeIsReady(){
         return {
             type: ActionType.STORE_IS_LOADING
+        }
+    }
+
+    static testStoreIsReady(){
+        return {
+            type: ActionType.TEST_STORE_IS_READY
         }
     }
 

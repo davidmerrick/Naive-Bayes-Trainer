@@ -16,9 +16,10 @@ class Root extends React.Component {
                             <li><Link to="/">Home</Link></li>
                             <li><Link to="/Test">Test</Link></li>
                         </ul>
-
-                        <Route exact path="/" component={Classifier} />
-                        <Route exact path="/test" component={TestPage} />
+                        <div className="container-fluid" id="app-container">
+                            <Route exact path="/" component={Classifier} />
+                            <Route exact path="/test" component={TestPage} />
+                        </div>
                     </div>
                 </Router>
             </Provider>

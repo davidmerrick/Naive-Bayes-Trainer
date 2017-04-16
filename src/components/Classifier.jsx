@@ -82,14 +82,14 @@ class Classifier extends React.Component {
                 let {text} = this.props.textItem;
                 if(!text){
                     return(
-                        <div className="container-fluid" id="app-container">
+                        <div>
                             <h1>Done classifying.</h1>
                             <a href={`${Endpoints.CLASSIFICATIONS}`} download="classifier.json">Export classification</a>
                         </div>
                     );
                 }
                 return (
-                    <div className="container-fluid" id="app-container">
+                    <div>
                         <h1>Classifying text:</h1>
                         <br />
                         <div id="classifier-view">
