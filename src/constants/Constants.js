@@ -9,7 +9,8 @@ const Constants = {
             value: "not_bashing_media"
         }
     ],
-    PORT: 3000
+    PORT: 3000,
+    CLASSIFIER_FILE: "conf/classifier.json"
 };
 
 export default Constants

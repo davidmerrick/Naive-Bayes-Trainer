@@ -32,11 +32,25 @@ try {
     });
 } catch(e) {
     console.log('Error reading conf/data.json file:', e.stack);
-    process.exit();
+    process.exit(1);
 }
 
 function getTrainedClassifier(){
-    let classifier = bayes();
+    let classifier;
+
+    // If there's already classifier JSON present, load it first
+    if(fs.existsSync(Constants.CLASSIFIER_FILE)){
+        try {
+            let jsonData = fs.readFileSync(Constants.CLASSIFIER_FILE, 'utf8');
+            classifier = bayes.fromJson(jsonData);
+        } catch(e){
+            console.log(`Error reading classifier from ${Constants.CLASSIFIER_FILE}:`, e.stack);
+            process.exit(1);
+        }
+    } else {
+        classifier = bayes()
+    }
+
     texts
         .filter(item => item.classification != null)
         .forEach(item => {
