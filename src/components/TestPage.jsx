@@ -5,6 +5,7 @@ import Actions from '../actions/Actions'
 import Constants from '../constants/Constants'
 import TextItem from '../models/TextItem'
 import TestStoreState from '../constants/TestStoreState'
+import MouseTrap from 'mousetrap'
 
 @connect(store => {
     return {
@@ -21,6 +22,12 @@ class TestPage extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    // componentDidMount(){
+    //     MouseTrap.bind(['ctrl+enter', 'command+enter'], e => {
+    //         console.log("Submitted form.");
+    //     });
+    // }
 
     handleChange(event){
         this.setState({
