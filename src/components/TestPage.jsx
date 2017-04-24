@@ -5,7 +5,7 @@ import Actions from '../actions/Actions'
 import Constants from '../constants/Constants'
 import TextItem from '../models/TextItem'
 import TestStoreState from '../constants/TestStoreState'
-import MouseTrap from 'mousetrap'
+import Mousetrap from 'mousetrap'
 
 @connect(store => {
     return {
@@ -23,15 +23,15 @@ class TestPage extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    // componentDidMount(){
-    //     MouseTrap.bind(['ctrl+enter', 'command+enter'], e => {
-    //         console.log("Submitted form.");
-    //     });
-    // }
-
     handleChange(event){
         this.setState({
             value: event.target.value
+        });
+    }
+
+    componentWillMount(){
+        Mousetrap.bind(['command+enter', 'ctrl+enter'], e => {
+            this.handleSubmit(null);
         });
     }
 
@@ -81,7 +81,7 @@ class TestPage extends React.Component {
             case TestStoreState.POSTED_ITEM:
                 setTimeout(() => {
                     this.props.dispatch(Actions.testStoreIsReady());
-                }, 3000);
+                }, 2000);
 
                 return(
                     <div>
@@ -100,6 +100,7 @@ class TestPage extends React.Component {
                             <FormControl
                                 id="test-input"
                                 componentClass="textarea"
+                                className="mousetrap"
                                 value={this.state.value}
                                 onChange={this.handleChange}
                                 bsSize="large"
@@ -110,6 +111,7 @@ class TestPage extends React.Component {
                             <Button type="submit" bsStyle="primary">
                                 Test
                             </Button>
+                            <span style={{fontStyle: 'italic'}}>&nbsp;&nbsp;ctrl + enter or ⌘ + enter</span>
                         </form>
                     </div>
                 );
