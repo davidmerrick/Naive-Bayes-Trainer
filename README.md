@@ -14,4 +14,11 @@ When the user is done, they can export their classifier settings to JSON.
 6. Classify some text. 
 7. Profit!
 
+# Scripts
+
+I included a script for converting Tweets to text items. Invoke it with:
+```
+npm run convert-tweets -- /path/to/tweets.json
+```
+
 ![UI screenshot](/img/ui.png)
