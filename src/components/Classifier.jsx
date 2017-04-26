@@ -8,7 +8,7 @@ import io from "socket.io-client";
 import SocketEvents from "../constants/SocketEvents";
 import Endpoints from "../constants/Endpoints";
 import UndoRedo from './UndoRedo.jsx'
-
+import Mousetrap from 'mousetrap'
 
 @connect(store => {
     return {
@@ -27,6 +27,15 @@ class Classifier extends React.Component {
 
     componentWillMount() {
         this.props.dispatch(Actions.initialize());
+
+        if(Constants.OPTIONS.length === 2) {
+            Mousetrap.bind(['1'], e => {
+                this.handleButtonClick(Constants.OPTIONS[0].value);
+            });
+            Mousetrap.bind(['2'], e => {
+                this.handleButtonClick(Constants.OPTIONS[1].value);
+            });
+        }
     }
 
     componentDidMount() {
