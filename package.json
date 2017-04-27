@@ -44,9 +44,11 @@
     "grunt-contrib-uglify": "^2.2.0",
     "grunt-contrib-watch": "^1.0.0",
     "gulp-browserify": "^0.5.1",
+    "gulp-react": "^3.1.0",
     "gulp-uglify": "^2.1.2",
     "gulp-util": "^3.0.8",
-    "gulp-watch": "^4.3.11"
+    "gulp-watch": "^4.3.11",
+    "reactify": "^1.1.1"
   },
   "babel": {
     "presets": [
