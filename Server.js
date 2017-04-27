@@ -18,21 +18,40 @@ app.use(express.static("public"));
 app.use(express.static("node_modules/bootstrap/dist"));
 app.use(BodyParser.json());
 
-
 // Todo: Index all texts by ID, for easy lookup.
 let texts = [];
 
-try {
-    let data = fs.readFileSync("conf/data.json", 'utf8');
-    let dataObject = JSON.parse(data);
-    dataObject.forEach(text => {
-         let id = uuidV4();
-         let textItem = new TextItem(id, text);
-         texts.push(textItem);
-    });
-} catch(e) {
-    console.log('Error reading conf/data.json file:', e.stack);
-    process.exit(1);
+// If there's a state file, load that. Otherwise, load the data file.
+if(fs.existsSync(Constants.STATE_FILE)){
+    initializeFromStateFile();
+} else {
+    initializeData();
+}
+
+function initializeFromStateFile(){
+    try {
+        let data = fs.readFileSync(Constants.STATE_FILE, 'utf8');
+        let dataObject = JSON.parse(data);
+        texts = dataObject.textItems;
+    } catch(e) {
+        console.log(`Error reading ${Constants.STATE_FILE} file:`, e.stack);
+        process.exit(1);
+    }
+}
+
+function initializeData(){
+    try {
+        let data = fs.readFileSync(Constants.DATA_FILE, 'utf8');
+        let dataObject = JSON.parse(data);
+        dataObject.forEach(text => {
+            let id = uuidV4();
+            let textItem = new TextItem(id, text);
+            texts.push(textItem);
+        });
+    } catch(e) {
+        console.log(`Error reading ${Constants.DATA_FILE} file:`, e.stack);
+        process.exit(1);
+    }
 }
 
 function getTrainedClassifier(){
@@ -79,6 +98,21 @@ app.get(`${Endpoints.TEXTS}/next`, (req, res) => {
     let nonClassifiedTexts = texts.filter(item => item.classification == null);
     let random = Math.floor(Math.random() * nonClassifiedTexts.length);
     res.json(nonClassifiedTexts[random]);
+});
+
+app.get(`${Endpoints.TEXTS}/saveState`, (req, res) => {
+    let state = {};
+    state.textItems = texts;
+
+    fs.writeFile(Constants.STATE_FILE, JSON.stringify(state), err => {
+        if(err){
+            console.log(`Error writing state file to ${Constants.STATE_FILE}.`);
+            return res.sendStatus(500);
+        }
+
+        console.log("SUCCESS: State file saved");
+        return res.sendStatus(204);
+    });
 });
 
 app.get(`${Endpoints.CLASSIFICATIONS}`, (req, res) => {

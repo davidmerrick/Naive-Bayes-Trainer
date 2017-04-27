@@ -7,7 +7,10 @@ const ActionType = keyMirror({
     UPDATED_COUNT: null,
     GET_TEST_RESULT_FULFILLED: null,
     POSTED_CLASSIFICATION_FULFILLED: null,
-    TEST_STORE_IS_READY: null
+    TEST_STORE_IS_READY: null,
+    SAVE_APP_STATE_FULFILLED: null,
+    SAVE_APP_STATE_FAILED: null,
+    DISMISS_ALERT: null
 });
 
 export default ActionType

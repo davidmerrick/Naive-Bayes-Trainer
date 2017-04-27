@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, ButtonToolbar} from "react-bootstrap";
+import {Button, ButtonToolbar, Alert} from "react-bootstrap";
 import Constants from "../constants/Constants";
 import {connect} from "react-redux";
 import StoreState from "../constants/StoreState";
@@ -16,7 +16,8 @@ import Mousetrap from 'mousetrap'
         error: store.Reducer.error,
         textItem: store.TextItemReducer.present.textItem,
         count: store.Reducer.count,
-        remaining: store.Reducer.remaining
+        remaining: store.Reducer.remaining,
+        alert: store.Reducer.alert
     };
 })
 class Classifier extends React.Component {
@@ -74,6 +75,31 @@ class Classifier extends React.Component {
         }
     }
 
+    getLinks(){
+        return(
+            <div>
+                <a href={`${Endpoints.CLASSIFICATIONS}`} download="classifier.json">Export classification</a>
+                &nbsp;&nbsp;
+                <a href="#" onClick={() => this.props.dispatch(Actions.saveState())}>Save state</a>
+            </div>
+        );
+    }
+
+    getAlert(){
+        if(!this.props.alert){
+            return null;
+        }
+        return(
+            <Alert bsStyle="success">
+                <h4>Success</h4>
+                <p>{this.props.alert}</p>
+                <p>
+                    <Button onClick={() => this.props.dispatch(Actions.dismissAlert())} bsStyle="success">Ok</Button>
+                </p>
+            </Alert>
+        );
+    }
+
     render(){
         let { storeState } = this.props;
         switch(storeState) {
@@ -92,13 +118,15 @@ class Classifier extends React.Component {
                 if(!text){
                     return(
                         <div>
+                            {this.getAlert()}
                             <h1>Done classifying.</h1>
-                            <a href={`${Endpoints.CLASSIFICATIONS}`} download="classifier.json">Export classification</a>
+                            {this.getLinks()}
                         </div>
                     );
                 }
                 return (
                     <div>
+                        {this.getAlert()}
                         <h1>Classifying text:</h1>
                         <br />
                         <div id="classifier-view">
@@ -114,7 +142,7 @@ class Classifier extends React.Component {
                         <div id="count-view">
                             {this.getCountText()}
                         </div>
-                        <a href={`${Endpoints.CLASSIFICATIONS}`} download="classifier.json">Export classification</a>
+                        {this.getLinks()}
                     </div>
                 );
                 break;

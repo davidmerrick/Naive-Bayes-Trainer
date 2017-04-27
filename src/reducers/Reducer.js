@@ -5,7 +5,8 @@ const initialState = {
     storeState: StoreState.EMPTY,
     error: null,
     count: 0,
-    remaining: null
+    remaining: null,
+    alert: null
 };
 
 const Reducer = (state = initialState, action) => {
@@ -30,6 +31,14 @@ const Reducer = (state = initialState, action) => {
             let { count, remaining } = action.payload;
             newState.count = count;
             newState.remaining = remaining;
+            return newState;
+            break;
+        case ActionType.SAVE_APP_STATE_FULFILLED:
+            newState.alert = "App state saved.";
+            return newState;
+            break;
+        case ActionType.DISMISS_ALERT:
+            newState.alert = null;
             return newState;
             break;
         default:

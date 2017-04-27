@@ -29,6 +29,23 @@ class Actions {
         });
     }
 
+    static saveState(){
+        // Todo: add error handling
+        return dispatch => {
+            axios.get(`${Endpoints.TEXTS}/saveState`).then(response => {
+                dispatch({
+                    type: ActionType.SAVE_APP_STATE_FULFILLED
+                });
+            });
+        }
+    }
+
+    static dismissAlert(){
+        return {
+            type: ActionType.DISMISS_ALERT
+        }
+    }
+
     static updateData(textItem, option){
         textItem.classification = option;
 

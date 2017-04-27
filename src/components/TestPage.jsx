@@ -53,6 +53,7 @@ class TestPage extends React.Component {
                 );
                 break;
             case TestStoreState.POSTED_ITEM:
+                // Todo: add progress bar here to indicate there's a timeout
                 setTimeout(() => {
                     this.props.dispatch(Actions.testStoreIsReady());
                 }, 2000);

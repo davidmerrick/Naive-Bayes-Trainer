@@ -1,3 +1,4 @@
 .idea
 node_modules
 conf/classifier.json
+conf/state.json
