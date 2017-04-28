@@ -7,10 +7,19 @@ import source from "vinyl-source-stream";
 import buffer from "vinyl-buffer";
 import uglify from "gulp-uglify";
 import sourcemaps from "gulp-sourcemaps";
+import del from 'del'
 
 const SRC = "src/app/Root.jsx";
 const DEST_FOLDER = "public/js/";
 const DEST_FILE = "bundle.js";
+
+const config = {
+    debug: gutil.env.debug || false
+}
+
+gulp.task('clean', function() {
+    return del([DEST_FOLDER + DEST_FILE, DEST_FOLDER + DEST_FILE + ".map"]);
+});
 
 gulp.task('js', () => {
     // set up the browserify instance on a task basis
@@ -27,11 +36,10 @@ gulp.task('js', () => {
         .bundle()
         .pipe(source(DEST_FILE))
         .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}))
-        // Add transformation tasks to the pipeline here.
-        .pipe(uglify())
+        .pipe(config.debug ? sourcemaps.init({loadMaps: true}) : gutil.noop())
+        .pipe(config.debug ? gutil.noop() : uglify())
         .on('error', gutil.log)
-        .pipe(sourcemaps.write('./'))
+        .pipe(config.debug ? sourcemaps.write('./') : gutil.noop())
         .pipe(gulp.dest(DEST_FOLDER));
 });
 
@@ -39,4 +47,4 @@ gulp.task('watch', function() {
     gulp.watch('src/**/*', ['js']);
 });
 
-gulp.task('default', ['js', 'watch'])
+gulp.task('default', ['clean', 'js', 'watch'])

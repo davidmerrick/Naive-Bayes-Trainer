@@ -40,10 +40,7 @@
     "babel-preset-react": "^6.16.0",
     "babelify": "^7.3.0",
     "browserify": "^14.3.0",
-    "grunt": "^1.0.1",
-    "grunt-browserify": "^5.0.0",
-    "grunt-contrib-uglify": "^2.2.0",
-    "grunt-contrib-watch": "^1.0.0",
+    "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-browserify": "^0.5.1",
     "gulp-react": "^3.1.0",
@@ -53,12 +50,5 @@
     "gulp-watch": "^4.3.11",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
-  },
-  "babel": {
-    "presets": [
-      "airbnb",
-      "es2015",
-      "react"
-    ]
   }
 }
