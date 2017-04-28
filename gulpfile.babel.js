@@ -9,9 +9,10 @@ import uglify from "gulp-uglify";
 import sourcemaps from "gulp-sourcemaps";
 
 const SRC = "src/app/Root.jsx";
-const DEST = "public/js/bundle.js";
+const DEST_FOLDER = "public/js/";
+const DEST_FILE = "bundle.js";
 
-gulp.task('javascript', () => {
+gulp.task('js', () => {
     // set up the browserify instance on a task basis
     let b = browserify({
         entries: SRC,
@@ -24,14 +25,18 @@ gulp.task('javascript', () => {
             plugins: ['transform-decorators-legacy', 'transform-object-rest-spread']
         })
         .bundle()
-        .pipe(source('app.js'))
+        .pipe(source(DEST_FILE))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
         // Add transformation tasks to the pipeline here.
         .pipe(uglify())
         .on('error', gutil.log)
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(DEST));
+        .pipe(gulp.dest(DEST_FOLDER));
 });
 
-gulp.task('default', ['javascript'])
+gulp.task('watch', function() {
+    gulp.watch('src/**/*', ['js']);
+});
+
+gulp.task('default', ['js', 'watch'])
