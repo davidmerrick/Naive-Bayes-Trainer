@@ -9,7 +9,7 @@ const Constants = {
             value: "not_bashing_media"
         }
     ],
-    PORT: 3030,
+    PORT: 3000,
     CLASSIFIER_FILE: "conf/classifier.json",
     DATA_FILE: "conf/data.json",
     STATE_FILE: "conf/state.json"
