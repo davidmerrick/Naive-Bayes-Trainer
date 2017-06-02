@@ -10,16 +10,19 @@ import Endpoints from "../constants/Endpoints";
 import UndoRedo from './UndoRedo.jsx'
 import Mousetrap from 'mousetrap'
 
-@connect(store => {
+function mapStateToProps(state){
     return {
-        storeState: store.Reducer.storeState,
-        error: store.Reducer.error,
-        textItem: store.TextItemReducer.present.textItem,
-        count: store.Reducer.count,
-        remaining: store.Reducer.remaining,
-        alert: store.Reducer.alert
+        storeState: state.Reducer.storeState,
+        error: state.Reducer.error,
+        textItem: state.TextItemReducer.present.textItem,
+        count: state.Reducer.count,
+        remaining: state.Reducer.remaining,
+        alert: state.Reducer.alert
     };
-})
+}
+
+@connect(mapStateToProps)
+
 class Classifier extends React.Component {
 
     constructor(props){

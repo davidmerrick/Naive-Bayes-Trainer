@@ -34,7 +34,7 @@ function initializeFromStateFile(){
         let dataObject = JSON.parse(data);
         texts = dataObject.textItems;
     } catch(e) {
-        console.log(`Error reading ${Constants.STATE_FILE} file:`, e.stack);
+        console.log(`Error reading ${Constants.STATE_FILE} file:`, e.stac);
         process.exit(1);
     }
 }

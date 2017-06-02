@@ -12,12 +12,9 @@ const TextItemReducer = (state = initialState, action) => {
             console.log("Got next text item");
             let textItem = action.payload.textItem;
             newState.textItem = textItem;
-            return newState;
-            break;
-        default:
-            return newState;
             break;
     }
+    return newState;
 }
 
 const undoableReducer = undoable(TextItemReducer, {

@@ -14,21 +14,16 @@ const Reducer = (state = initialState, action) => {
             let testResult = action.payload.testResult;
             newState.testResult = testResult;
             newState.storeState = TestStoreState.GOT_RESULT;
-            return newState;
             break;
         case ActionType.POSTED_CLASSIFICATION_FULFILLED:
             console.log("Posted data");
             newState.storeState = TestStoreState.POSTED_ITEM;
-            return newState;
             break;
         case ActionType.TEST_STORE_IS_READY:
             newState.storeState = TestStoreState.READY;
-            return newState;
             break;
-        default:
-            return newState;
-            break;
-    }
+    };
+    return newState;
 }
 
 export default Reducer
